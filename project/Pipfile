@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+gunicorn = "*"
+asyncpg = "*"
+tortoise-orm = "*"
+aerich = "*"
+pytest = "*"
+requests = "*"
+pytest-cov = "*"
+
+[dev-packages]
+flake8 = "*"
+black = "*"
+
+[requires]
+python_version = "3.10"
