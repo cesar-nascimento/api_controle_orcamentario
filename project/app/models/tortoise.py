@@ -1,4 +1,3 @@
-from pyexpat import model
 from tortoise import fields, models
 
 
