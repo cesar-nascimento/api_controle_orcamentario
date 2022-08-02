@@ -1,19 +1,24 @@
 import logging
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 
 from app.db import init_db
+from app.api import ping, receitas
 
 
 log = logging.getLogger("uvicorn")
 
 
-app = FastAPI()
+def create_application() -> FastAPI:
+
+    application = FastAPI()
+    application.include_router(ping.router)
+    application.include_router(receitas.router, prefix="/receitas", tags=["receitas"])
+
+    return application
 
 
-@app.get("/ping")
-def pong():
-    return {"ping": "pong"}
+app = create_application()
 
 
 @app.on_event("startup")
