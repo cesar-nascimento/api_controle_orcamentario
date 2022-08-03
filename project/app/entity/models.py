@@ -1,5 +1,3 @@
-from datetime import date
-
 from tortoise import fields, models
 from tortoise.contrib.pydantic import pydantic_model_creator
 

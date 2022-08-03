@@ -8,10 +8,11 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONBUFFERED 1
 
 # copia app e instala dependencias do python
-COPY ./Pipfile.lock ./Pipfile ./
+COPY ./Pipfile ./
 RUN pip install --upgrade pip \
 	&& pip install pipenv \
-	&& pipenv install --system --keep-outdated
+	&& pipenv lock \
+	&& pipenv install --system
 
 COPY . .
 RUN chmod +x entrypoint.sh

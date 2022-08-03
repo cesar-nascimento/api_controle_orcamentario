@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 
 from app.db import init_db
-from app.api import ping, receitas
+from app.boundary import ping, receitas
 
 
 log = logging.getLogger("uvicorn")

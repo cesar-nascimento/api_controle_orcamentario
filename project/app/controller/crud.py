@@ -1,5 +1,5 @@
-from app.models.pydantic import ReceitaPayloadSchema
-from app.models.tortoise import Receita
+from app.entity.schema import ReceitaPayloadSchema
+from app.entity.models import Receita
 
 
 async def post(payload: ReceitaPayloadSchema) -> int:

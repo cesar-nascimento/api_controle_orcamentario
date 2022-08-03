@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.api import crud
-from app.models.pydantic import ReceitaPayloadSchema, ReceitaResponseSchema
+from app.controller import crud
+from app.entity.schema import ReceitaPayloadSchema, ReceitaResponseSchema
 
 
 router = APIRouter()
