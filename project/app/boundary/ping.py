@@ -4,8 +4,6 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-@router.get("/ping")
-async def pong():
-    return {
-        "ping": "pong!",
-    }
+@router.get("/healthcheck", status_code=200)
+async def healthcheck() -> dict:
+    return {"status": "OK"}
