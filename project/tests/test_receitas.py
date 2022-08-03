@@ -38,3 +38,21 @@ def test_create_receita_invalid_json(test_app_with_db):
             },
         ]
     }
+
+
+def test_create_receita_duplicada(test_app_with_db):
+    response = test_app_with_db.post(
+        "/receitas/",
+        data=json.dumps(
+            {"descricao": "receita teste", "valor": 0, "data": "2022-08-02"}
+        ),
+    )
+    response = test_app_with_db.post(
+        "/receitas/",
+        data=json.dumps(
+            {"descricao": "receita teste", "valor": 0, "data": "2022-08-02"}
+        ),
+    )
+
+    assert response.status_code == 409
+    assert response.json() == {"detail": "Descrição duplicada para o mês informado"}
