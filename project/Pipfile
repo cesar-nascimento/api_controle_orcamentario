@@ -8,11 +8,11 @@ fastapi = "*"
 uvicorn = "*"
 gunicorn = "*"
 asyncpg = "*"
-tortoise-orm = "*"
 aerich = "*"
 pytest = "*"
 requests = "*"
 pytest-cov = "*"
+tortoise-orm = "*"
 
 [dev-packages]
 flake8 = "*"

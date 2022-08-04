@@ -21,3 +21,17 @@ async def create_receita(payload: ReceitaPayloadSchema) -> ReceitaResponseSchema
         "data": payload.data,
     }
     return response_object
+
+
+@router.get("/", response_model=list[ReceitaResponseSchema], status_code=200)
+async def read_all_receitas() -> list[ReceitaResponseSchema]:
+    return await crud.get_all()
+
+
+@router.get("/{id}", response_model=ReceitaResponseSchema, status_code=200)
+async def read_receita(id: int) -> ReceitaResponseSchema:
+    receita = await crud.get(id)
+    if not receita:
+        raise HTTPException(status_code=404, detail="Receita não encontrada.")
+
+    return receita

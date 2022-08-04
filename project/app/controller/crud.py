@@ -1,4 +1,4 @@
-from app.entity.schema import ReceitaPayloadSchema
+from app.entity.schema import ReceitaPayloadSchema, ReceitaResponseSchema
 from app.entity.models import Receita
 
 
@@ -17,3 +17,15 @@ async def post(payload: ReceitaPayloadSchema) -> int:
         return None
     await receita.save()
     return receita.id
+
+
+async def get_all() -> list[ReceitaResponseSchema]:
+    receitas = await Receita.all().values()
+    return receitas
+
+
+async def get(id: int) -> ReceitaResponseSchema:
+    receita = await Receita.filter(id=id).first().values()
+    if not receita:
+        return None
+    return receita
