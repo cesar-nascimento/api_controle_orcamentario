@@ -12,7 +12,7 @@ async def create_receita(payload: ReceitaPayloadSchema) -> ReceitaResponseSchema
 
     if not receita_id:
         raise HTTPException(
-            status_code=409, detail="Descrição duplicada para o mês informado"
+            status_code=409, detail="Descrição duplicada para o mês informado."
         )
     response_object = {
         "id": receita_id,
@@ -34,4 +34,14 @@ async def read_receita(id: int) -> ReceitaResponseSchema:
     if not receita:
         raise HTTPException(status_code=404, detail="Receita não encontrada.")
 
+    return receita
+
+
+@router.put("/{id}", response_model=ReceitaResponseSchema)
+async def update_receita(
+    id: int, payload: ReceitaPayloadSchema
+) -> ReceitaResponseSchema:
+    receita = await crud.put(id, payload)
+    if not receita:
+        raise HTTPException(status_code=404, detail="Receita não encontrada.")
     return receita
