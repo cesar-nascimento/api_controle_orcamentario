@@ -10,8 +10,17 @@ log = logging.getLogger("uvicorn")
 
 
 def create_application() -> FastAPI:
+    description = """
+API para controle orçamentário.
 
-    application = FastAPI()
+Permite operações de CRUD para Receitas e Despesas.
+
+[Github](https://github.com/cesar-nascimento/api_controle_orcamentario)
+"""
+
+    application = FastAPI(
+        title="Controle Orçamentario", description=description, version="0.1.0"
+    )
     application.include_router(healthcheck.router)
     application.include_router(receitas.router, prefix="/receitas", tags=["receitas"])
     application.include_router(despesas.router, prefix="/despesas", tags=["despesas"])

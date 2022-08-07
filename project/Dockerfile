@@ -11,8 +11,7 @@ ENV PYTHONBUFFERED 1
 COPY ./Pipfile ./
 RUN pip install --upgrade pip \
 	&& pip install pipenv \
-	&& pipenv lock \
-	&& pipenv install --system
+	&& pipenv install --system --skip-lock
 
 COPY . .
 RUN chmod +x entrypoint.sh

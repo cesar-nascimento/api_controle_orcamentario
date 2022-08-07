@@ -1,0 +1,29 @@
+FROM python:3.10-alpine3.16
+
+RUN addgroup -S app && adduser -S app -G app
+
+ENV APP_HOME=/home/app/web
+WORKDIR $APP_HOME
+
+# Evitar .pyc files
+ENV PYTHONDONTWRITEBYTECODE 1
+# Envia stdout e stderr para o terminal
+ENV PYTHONBUFFERED 1
+
+ENV ENVIRONMENT prod
+ENV TESTING 0
+
+# copia app e instala dependencias do python
+COPY ./Pipfile ./
+RUN pip install --upgrade pip \
+	&& pip install pipenv \
+	&& pipenv install --system --keep-outdated --skip-lock
+
+COPY . .
+
+RUN chown -R app:app $APP_HOME
+USER app
+
+CMD aerich init -t app.db.TORTOISE_ORM \
+	&& aerich init-db \
+	&& gunicorn --bind 0.0.0.0:$PORT app.main:app -k uvicorn.workers.UvicornWorker
