@@ -1,7 +1,7 @@
 # api_controle_orcamentario
 Desenvolvimento de API para o desafio de back end da Alura.
 
-Documentação: [https://api-controle-orcamentario.herokuapp.com/](https://api-controle-orcamentario.herokuapp.com/docs)
+Documentação: [https://api-controle-orcamentario.herokuapp.com/redoc](https://api-controle-orcamentario.herokuapp.com/redoc)
 
 Atualmente estamos na [primeira semana](https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest). Essa é a minha solução para o desafio com as [tecnologias](#tecnologias-utilizadas) que escolhi para criar a API.
 
@@ -34,4 +34,4 @@ Depois de instalado, rode um dos seguintes comandos:
 * Em um navegador vá até a url `http://localhost:8000/healthcheck` ou `http://localhost:8000/docs` para verificar a aplicação funcionando.
 
 ## Documentação
-A documentação pode ser encontrada em [https://api-controle-orcamentario.herokuapp.com/](https://api-controle-orcamentario.herokuapp.com/)
+A documentação pode ser encontrada em [https://api-controle-orcamentario.herokuapp.com/redoc](https://api-controle-orcamentario.herokuapp.com/redoc)
