@@ -45,3 +45,12 @@ async def update_receita(
     if not receita:
         raise HTTPException(status_code=404, detail="Receita não encontrada.")
     return receita
+
+
+@router.delete("/{id}", response_model=ReceitaResponseSchema)
+async def delete_receita(id: int) -> ReceitaResponseSchema:
+    receita = await crud.get(id)
+    if not receita:
+        raise HTTPException(status_code=404, detail="Receita não encontrada.")
+    await crud.delete(id)
+    return receita

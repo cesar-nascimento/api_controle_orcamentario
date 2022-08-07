@@ -32,7 +32,7 @@ async def get(id: int) -> ReceitaResponseSchema:
     return receita
 
 
-async def put(id: int, payload: ReceitaPayloadSchema) -> dict | None:
+async def put(id: int, payload: ReceitaPayloadSchema) -> ReceitaResponseSchema | None:
     receita = await Receita.filter(id=id).first()
     if not receita:
         return None
@@ -51,3 +51,8 @@ async def put(id: int, payload: ReceitaPayloadSchema) -> dict | None:
     )
     updated_receita = await Receita.filter(id=id).first().values()
     return updated_receita
+
+
+async def delete(id: int) -> ReceitaResponseSchema:
+    receita = await Receita.filter(id=id).first().delete()
+    return receita
