@@ -12,3 +12,13 @@ class ReceitaPayloadSchema(BaseModel):
 
 class ReceitaResponseSchema(ReceitaPayloadSchema):
     id: int
+
+
+class DespesaPayloadSchema(BaseModel):
+    descricao: str
+    valor: Decimal
+    data: date
+
+
+class DespesaResponseSchema(DespesaPayloadSchema):
+    id: int

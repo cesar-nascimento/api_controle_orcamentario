@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.controller import crud
+from app.controller import crud_receita
 from app.entity.schema import ReceitaPayloadSchema, ReceitaResponseSchema
 
 
@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.post("/", response_model=ReceitaResponseSchema, status_code=201)
 async def create_receita(payload: ReceitaPayloadSchema) -> ReceitaResponseSchema:
-    receita_id = await crud.post(payload)
+    receita_id = await crud_receita.post(payload)
 
     if not receita_id:
         raise HTTPException(
@@ -25,12 +25,12 @@ async def create_receita(payload: ReceitaPayloadSchema) -> ReceitaResponseSchema
 
 @router.get("/", response_model=list[ReceitaResponseSchema], status_code=200)
 async def read_all_receitas() -> list[ReceitaResponseSchema]:
-    return await crud.get_all()
+    return await crud_receita.get_all()
 
 
 @router.get("/{id}", response_model=ReceitaResponseSchema, status_code=200)
 async def read_receita(id: int) -> ReceitaResponseSchema:
-    receita = await crud.get(id)
+    receita = await crud_receita.get(id)
     if not receita:
         raise HTTPException(status_code=404, detail="Receita não encontrada.")
 
@@ -41,7 +41,7 @@ async def read_receita(id: int) -> ReceitaResponseSchema:
 async def update_receita(
     id: int, payload: ReceitaPayloadSchema
 ) -> ReceitaResponseSchema:
-    receita = await crud.put(id, payload)
+    receita = await crud_receita.put(id, payload)
     if not receita:
         raise HTTPException(status_code=404, detail="Receita não encontrada.")
     return receita
@@ -49,8 +49,8 @@ async def update_receita(
 
 @router.delete("/{id}", response_model=ReceitaResponseSchema)
 async def delete_receita(id: int) -> ReceitaResponseSchema:
-    receita = await crud.get(id)
+    receita = await crud_receita.get(id)
     if not receita:
         raise HTTPException(status_code=404, detail="Receita não encontrada.")
-    await crud.delete(id)
+    await crud_receita.delete(id)
     return receita
