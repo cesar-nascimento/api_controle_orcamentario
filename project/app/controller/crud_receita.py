@@ -9,11 +9,11 @@ async def post(payload: ReceitaPayloadSchema) -> int:
         valor=payload.valor,
         data=payload.data,
     )
-    receita_ja_existe = (
-        await Receita.filter(data=receita.data)
-        .filter(descricao=receita.descricao)
-        .first()
-    )
+    receita_ja_existe = await Receita.filter(
+        descricao__iexact=receita.descricao,
+        data__year=receita.data.year,
+        data__month=receita.data.month,
+    ).first()
     if receita_ja_existe:
         return None
     await receita.save()
@@ -36,11 +36,12 @@ async def put(id: int, payload: ReceitaPayloadSchema) -> ReceitaResponseSchema |
     receita = await Receita.filter(id=id).first()
     if not receita:
         return None
-    receita_ja_existe = (
-        await Receita.filter(data=payload.data)
-        .filter(descricao=payload.descricao)
-        .first()
-    )
+    receita_ja_existe = await Receita.filter(
+        descricao__iexact=payload.descricao,
+        data__year=payload.data.year,
+        data__month=payload.data.month,
+    ).first()
+
     if receita_ja_existe and receita_ja_existe.id != receita.id:
         raise HTTPException(
             status_code=409,

@@ -9,11 +9,11 @@ async def post(payload: DespesaPayloadSchema) -> int:
         valor=payload.valor,
         data=payload.data,
     )
-    despesa_ja_existe = (
-        await Despesa.filter(data=despesa.data)
-        .filter(descricao=despesa.descricao)
-        .first()
-    )
+    despesa_ja_existe = await Despesa.filter(
+        descricao__iexact=despesa.descricao,
+        data__year=despesa.data.year,
+        data__month=despesa.data.month,
+    ).first()
     if despesa_ja_existe:
         return None
     await despesa.save()
@@ -36,11 +36,11 @@ async def put(id: int, payload: DespesaPayloadSchema) -> DespesaResponseSchema |
     despesa = await Despesa.filter(id=id).first()
     if not despesa:
         return None
-    despesa_ja_existe = (
-        await Despesa.filter(data=payload.data)
-        .filter(descricao=payload.descricao)
-        .first()
-    )
+    despesa_ja_existe = await Despesa.filter(
+        descricao__iexact=payload.descricao,
+        data__year=payload.data.year,
+        data__month=payload.data.month,
+    ).first()
     if despesa_ja_existe and despesa_ja_existe.id != despesa.id:
         raise HTTPException(
             status_code=409,

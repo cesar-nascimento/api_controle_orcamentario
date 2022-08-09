@@ -47,7 +47,7 @@ def test_create_receita_duplicated(client):
             {
                 "descricao": "test_create_receita_duplicated",
                 "valor": 0,
-                "data": "2022-08-02",
+                "data": "2022-08-01",
             }
         ),
     )
@@ -55,9 +55,9 @@ def test_create_receita_duplicated(client):
         "/receitas/",
         data=json.dumps(
             {
-                "descricao": "test_create_receita_duplicated",
+                "descricao": "TEST_CREATE_RECEITA_DUPLICATED",
                 "valor": 0,
-                "data": "2022-08-02",
+                "data": "2022-08-10",
             }
         ),
     )

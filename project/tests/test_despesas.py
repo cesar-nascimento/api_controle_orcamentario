@@ -55,9 +55,9 @@ def test_create_despesa_duplicated(client):
         "/despesas/",
         data=json.dumps(
             {
-                "descricao": "test_create_despesa_duplicated",
+                "descricao": "TEST_CREATE_DESPESA_DUPLICATED",
                 "valor": 0,
-                "data": "2022-08-02",
+                "data": "2022-08-10",
             }
         ),
     )
