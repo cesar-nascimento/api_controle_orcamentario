@@ -29,8 +29,8 @@ class ReceitaResponseSchema(BaseResponseSchema):
 
 
 class DespesaPayloadSchema(BasePayloadSchema):
-    pass
+    categoria: Categorias = Categorias.OUTRAS
 
 
 class DespesaResponseSchema(BaseResponseSchema):
-    pass
+    categoria: Categorias = Categorias.OUTRAS

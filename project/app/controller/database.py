@@ -33,25 +33,19 @@ async def get(id: UUID, item: Receita | Despesa):
 
 async def put(
     id: UUID,
-    payload: dict,
+    item_novo: Receita | Despesa,
     item_antigo: ReceitaResponseSchema | DespesaResponseSchema,
     table: Receita | Despesa,
 ) -> ReceitaResponseSchema | DespesaResponseSchema | None:
     item_novo_ja_existe = await table.filter(
-        descricao__iexact=payload.descricao,
-        data__year=payload.data.year,
-        data__month=payload.data.month,
+        descricao__iexact=item_novo.descricao,
+        data__year=item_novo.data.year,
+        data__month=item_novo.data.month,
     ).first()
     if item_novo_ja_existe and item_novo_ja_existe.id != id:
         return None
-
-    return await item_antigo.update_from_dict(
-        {
-            "descricao": payload.descricao,
-            "data": payload.data,
-            "valor": payload.valor,
-        }
-    )
+    await item_antigo.update_from_dict(item_novo.as_dict()).save()
+    return item_antigo
 
 
 async def delete(

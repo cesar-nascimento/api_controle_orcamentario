@@ -10,6 +10,7 @@ async def post(payload: DespesaPayloadSchema) -> Despesa:
         descricao=payload.descricao,
         valor=payload.valor,
         data=payload.data,
+        categoria=payload.categoria,
     )
     return await database.create(item)
 
@@ -27,8 +28,14 @@ async def get(id: UUID) -> DespesaResponseSchema:
 async def put(
     id: UUID, payload: DespesaPayloadSchema, item_antigo: DespesaResponseSchema
 ) -> DespesaResponseSchema | None:
+    item_novo = Despesa(
+        descricao=payload.descricao,
+        valor=payload.valor,
+        data=payload.data,
+        categoria=payload.categoria,
+    )
     item_updated = await database.put(
-        id=id, payload=payload, item_antigo=item_antigo, table=Despesa
+        id=id, item_novo=item_novo, item_antigo=item_antigo, table=Despesa
     )
     return item_updated
 

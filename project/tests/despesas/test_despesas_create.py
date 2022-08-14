@@ -2,11 +2,15 @@ import json
 import pytest
 
 
-def test_create_despesa(client):
+def test_create_despesa_sem_categoria(client):
     response = client.post(
         "/despesas/",
         data=json.dumps(
-            {"descricao": "test_create_despesa", "valor": 1, "data": "2022-08-02"}
+            {
+                "descricao": "test_create_despesa_sem_categoria",
+                "valor": 1,
+                "data": "2022-08-02",
+            }
         ),
     )
 
@@ -14,6 +18,27 @@ def test_create_despesa(client):
     assert response.json()["descricao"] == "test_create_despesa"
     assert response.json()["valor"] == 1
     assert response.json()["data"] == "2022-08-02"
+    assert response.json()["categoria"] == "Outras"
+
+
+def test_create_despesa_com_categoria(client):
+    response = client.post(
+        "/despesas/",
+        data=json.dumps(
+            {
+                "descricao": "test_create_despesa_com_categoria",
+                "valor": 1,
+                "data": "2022-08-02",
+                "categoria": "Alimentação",
+            }
+        ),
+    )
+
+    assert response.status_code == 201
+    assert response.json()["descricao"] == "test_create_despesa"
+    assert response.json()["valor"] == 1
+    assert response.json()["data"] == "2022-08-02"
+    assert response.json()["categoria"] == "Alimentação"
 
 
 @pytest.mark.parametrize(
@@ -81,6 +106,35 @@ def test_create_despesa(client):
                         "msg": "ensure that there are no more than 2 decimal places",
                         "type": "value_error.decimal.max_places",
                         "ctx": {"decimal_places": 2},
+                    }
+                ]
+            },
+        ],
+        [
+            {
+                "descricao": "string",
+                "valor": 1,
+                "data": "2022-08-12",
+                "categoria": "categoria_invalida",
+            },
+            {
+                "detail": [
+                    {
+                        "loc": ["body", "categoria"],
+                        "msg": "value is not a valid enumeration member; permitted: 'Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras'",
+                        "type": "type_error.enum",
+                        "ctx": {
+                            "enum_values": [
+                                "Alimentação",
+                                "Saúde",
+                                "Moradia",
+                                "Transporte",
+                                "Educação",
+                                "Lazer",
+                                "Imprevistos",
+                                "Outras",
+                            ]
+                        },
                     }
                 ]
             },

@@ -23,6 +23,14 @@ def test_update_receita(client):
         "data": "2021-08-10",
         "id": receita_id,
     }
+    response = client.get(f"/receitas/{receita_id}")
+    assert response.status_code == 200
+    assert response.json() == {
+        "descricao": "test_update_receita2",
+        "valor": 100,
+        "data": "2021-08-10",
+        "id": receita_id,
+    }
 
 
 def test_update_receita_duplicada(client):

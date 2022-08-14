@@ -27,8 +27,13 @@ async def get(id: UUID) -> ReceitaResponseSchema:
 async def put(
     id: UUID, payload: ReceitaPayloadSchema, item_antigo: ReceitaResponseSchema
 ) -> ReceitaResponseSchema | None:
+    item_novo = Receita(
+        descricao=payload.descricao,
+        valor=payload.valor,
+        data=payload.data,
+    )
     item_updated = await database.put(
-        id=id, payload=payload, item_antigo=item_antigo, table=Receita
+        id=id, item_novo=item_novo, item_antigo=item_antigo, table=Receita
     )
     return item_updated
 

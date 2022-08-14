@@ -13,15 +13,31 @@ def test_update_despesa(client):
     response = client.put(
         f"/despesas/{despesa_id}",
         data=json.dumps(
-            {"descricao": "test_update_despesa2", "valor": 100, "data": "2021-08-10"}
+            {
+                "descricao": "test_update_despesa2",
+                "valor": 100,
+                "data": "2021-08-10",
+                "categoria": "Alimentação",
+            }
         ),
     )
+
     assert response.status_code == 200
     assert response.json() == {
         "descricao": "test_update_despesa2",
         "valor": 100,
         "data": "2021-08-10",
         "id": despesa_id,
+        "categoria": "Alimentação",
+    }
+    response = client.get(f"/despesas/{despesa_id}")
+    assert response.status_code == 200
+    assert response.json() == {
+        "descricao": "test_update_despesa2",
+        "valor": 100,
+        "data": "2021-08-10",
+        "id": despesa_id,
+        "categoria": "Alimentação",
     }
 
 
