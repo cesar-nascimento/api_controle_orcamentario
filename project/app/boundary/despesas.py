@@ -1,5 +1,7 @@
+from uuid import UUID
+
 from fastapi import APIRouter, HTTPException
-from app.controller import crud_despesa
+from app.controller import despesa
 from app.entity.schema import DespesaPayloadSchema, DespesaResponseSchema
 
 
@@ -8,49 +10,53 @@ router = APIRouter()
 
 @router.post("/", response_model=DespesaResponseSchema, status_code=201)
 async def create_despesa(payload: DespesaPayloadSchema) -> DespesaResponseSchema:
-    despesa_id = await crud_despesa.post(payload)
-
-    if not despesa_id:
+    """Cria uma nova despesa no banco de dados ou retorna 409 em caso de duplicidade.
+    Não podem existir duas despesas no mesmo mês com a mesma descrição."""
+    item = await despesa.post(payload)
+    if not item:
         raise HTTPException(
             status_code=409, detail="Descrição duplicada para o mês informado."
         )
-    response_object = {
-        "id": despesa_id,
-        "descricao": payload.descricao,
-        "valor": payload.valor,
-        "data": payload.data,
-    }
-    return response_object
+    return item
 
 
 @router.get("/", response_model=list[DespesaResponseSchema], status_code=200)
 async def read_all_despesas() -> list[DespesaResponseSchema]:
-    return await crud_despesa.get_all()
+    """Busca todas as despesas existentes no banco de dados."""
+    return await despesa.get_all()
 
 
 @router.get("/{id}", response_model=DespesaResponseSchema, status_code=200)
-async def read_despesa(id: int) -> DespesaResponseSchema:
-    despesa = await crud_despesa.get(id)
-    if not despesa:
+async def read_despesa(id: UUID) -> DespesaResponseSchema:
+    """Retorna uma única despesa ou 404 caso não exista despesa com o id informado."""
+    item = await despesa.get(id)
+    if not item:
         raise HTTPException(status_code=404, detail="Despesa não encontrada.")
-
-    return despesa
+    return item
 
 
 @router.put("/{id}", response_model=DespesaResponseSchema)
 async def update_despesa(
-    id: int, payload: DespesaPayloadSchema
+    id: UUID, payload: DespesaPayloadSchema
 ) -> DespesaResponseSchema:
-    despesa = await crud_despesa.put(id, payload)
-    if not despesa:
+    """Update de despesa por id informado. Retorna 404 caso não encontrada.
+    Retorna 409 caso update venha a gerar despesa duplicada."""
+    item = await despesa.get(id=id)
+    if not item:
         raise HTTPException(status_code=404, detail="Despesa não encontrada.")
-    return despesa
+    item_updated = await despesa.put(id=id, payload=payload, item_antigo=item)
+    if not item_updated:
+        raise HTTPException(
+            status_code=409,
+            detail="Update vai gerar descrição duplicada para o mês informado.",
+        )
+    return item_updated
 
 
 @router.delete("/{id}", response_model=DespesaResponseSchema)
-async def delete_despesa(id: int) -> DespesaResponseSchema:
-    despesa = await crud_despesa.get(id)
-    if not despesa:
+async def delete_despesa(id: UUID) -> DespesaResponseSchema:
+    item = await despesa.get(id)
+    if not item:
         raise HTTPException(status_code=404, detail="Despesa não encontrada.")
-    await crud_despesa.delete(id)
-    return despesa
+    await despesa.delete(id)
+    return item

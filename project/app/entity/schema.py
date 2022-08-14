@@ -1,24 +1,36 @@
-from decimal import Decimal
 from datetime import date
+from uuid import UUID
 
 from pydantic import BaseModel
+from pydantic import condecimal
+
+from app.entity.models import Categorias
 
 
-class ReceitaPayloadSchema(BaseModel):
+class BasePayloadSchema(BaseModel):
     descricao: str
-    valor: Decimal
+    valor: condecimal(gt=0, max_digits=9, decimal_places=2)
     data: date
 
 
-class ReceitaResponseSchema(ReceitaPayloadSchema):
-    id: int
+class BaseResponseSchema(BasePayloadSchema):
+    id: UUID
+
+    class Config:
+        orm_mode = True
 
 
-class DespesaPayloadSchema(BaseModel):
-    descricao: str
-    valor: Decimal
-    data: date
+class ReceitaPayloadSchema(BasePayloadSchema):
+    pass
 
 
-class DespesaResponseSchema(DespesaPayloadSchema):
-    id: int
+class ReceitaResponseSchema(BaseResponseSchema):
+    pass
+
+
+class DespesaPayloadSchema(BasePayloadSchema):
+    pass
+
+
+class DespesaResponseSchema(BaseResponseSchema):
+    pass

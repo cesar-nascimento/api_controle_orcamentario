@@ -1,39 +1,24 @@
-from typing import Optional, Union, Type
+from enum import Enum
 
-from tortoise import fields, models
+from tortoise import fields
 from tortoise.models import Model
-from tortoise.contrib.pydantic import pydantic_model_creator
 
 
-class DateFieldNoParsing(fields.DateField):
-    def to_db_value(self, value: int, instance: "Union[Type[Model], Model]"):
+class CustomDateField(fields.DateField):
+    def to_db_value(self, value: int, _) -> int:
         self.validate(value)
         return value
 
 
-class Receita(models.Model):
-    id = fields.IntField(pk=True)
+class Receita(Model):
+    id = fields.UUIDField(pk=True)
     descricao = fields.TextField(max_length=255)
     valor = fields.DecimalField(max_digits=9, decimal_places=2)
-    data = DateFieldNoParsing()
-    created_at = fields.DatetimeField(auto_now_add=True)
-    modified_at = fields.DatetimeField(auto_now=True)
-
-    def __str__(self) -> str:
-        return self.descricao
+    data = CustomDateField()
 
 
-class Despesa(models.Model):
-    id = fields.IntField(pk=True)
+class Despesa(Model):
+    id = fields.UUIDField(pk=True)
     descricao = fields.TextField(max_length=255)
     valor = fields.DecimalField(max_digits=9, decimal_places=2)
-    data = DateFieldNoParsing()
-    created_at = fields.DatetimeField(auto_now_add=True)
-    modified_at = fields.DatetimeField(auto_now=True)
-
-    def __str__(self) -> str:
-        return self.descricao
-
-
-ReceitaSchema = pydantic_model_creator(Receita)
-DespesaSchema = pydantic_model_creator(Despesa)
+    data = CustomDateField()
