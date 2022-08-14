@@ -37,6 +37,16 @@ async def read_receita(id: UUID) -> ReceitaResponseSchema:
     return item
 
 
+@router.get("/{ano}/{mes}", response_model=list[ReceitaResponseSchema], status_code=200)
+async def read_all_receitas_ano_mes(ano: int, mes: int) -> list[ReceitaResponseSchema]:
+    """Busca todas as receitas existentes no mês e ano informados.
+    Retorna 422 em caso de data inválida"""
+    items = await receita.get_all_ano_mes(ano, mes)
+    if items is None:
+        raise HTTPException(status_code=422, detail="Data informada inválida.")
+    return items
+
+
 @router.put("/{id}", response_model=ReceitaResponseSchema)
 async def update_receita(
     id: UUID, payload: ReceitaPayloadSchema

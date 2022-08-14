@@ -19,6 +19,11 @@ async def get_all(descricao: str | None) -> list[ReceitaResponseSchema]:
     return items
 
 
+async def get_all_ano_mes(ano: int, mes: int) -> list[ReceitaResponseSchema] | None:
+    items = await database.get_all_ano_mes(ano, mes, Receita)
+    return items
+
+
 async def get(id: UUID) -> ReceitaResponseSchema:
     item = await database.get(id, Receita)
     return item

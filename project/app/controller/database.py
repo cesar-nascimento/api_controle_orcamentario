@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import date
 
 from app.entity.models import Receita, Despesa
 from app.entity.schema import (
@@ -28,6 +29,21 @@ async def get_all(
     if descricao:
         return await table.filter(descricao__icontains=descricao)
     return await table.all()
+
+
+async def get_all_ano_mes(
+    ano: int,
+    mes: int,
+    table: Receita | Despesa,
+) -> list[ReceitaResponseSchema] | list[DespesaResponseSchema] | None:
+    try:
+        data = date(ano, mes, 1)
+    except (ValueError, OverflowError):
+        return None
+    return await table.filter(
+        data__year=data.year,
+        data__month=data.month,
+    )
 
 
 async def get(id: UUID, item: Receita | Despesa):
