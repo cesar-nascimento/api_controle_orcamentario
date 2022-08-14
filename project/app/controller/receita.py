@@ -14,8 +14,8 @@ async def post(payload: ReceitaPayloadSchema) -> Receita:
     return await database.create(item)
 
 
-async def get_all() -> list[ReceitaResponseSchema]:
-    items = await database.get_all(Receita)
+async def get_all(descricao: str | None) -> list[ReceitaResponseSchema]:
+    items = await database.get_all(descricao, Receita)
     return items
 
 

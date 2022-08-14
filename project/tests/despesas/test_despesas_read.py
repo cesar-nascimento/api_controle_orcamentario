@@ -18,6 +18,36 @@ def test_read_all_despesas(client):
     assert len(list(filter(lambda x: x["id"] == despesa_id, response_list))) == 1
 
 
+def test_read_all_despesas_com_descricao(client):
+    response = client.post(
+        "/despesas/",
+        data=json.dumps(
+            {
+                "descricao": "test_read_all_despesas_com_descricao",
+                "valor": 1,
+                "data": "2022-08-02",
+            }
+        ),
+    )
+    response = client.post(
+        "/despesas/",
+        data=json.dumps(
+            {
+                "descricao": "test_read_all_despesas_com_descricao_diferente",
+                "valor": 1,
+                "data": "2022-08-02",
+            }
+        ),
+    )
+    despesa_id = response.json()["id"]
+
+    response = client.get("/despesas/?descricao=diferente")
+    assert response.status_code == 200
+
+    response_list = response.json()
+    assert len(list(filter(lambda x: x["id"] == despesa_id, response_list))) == 1
+
+
 def test_read_despesa(client):
     response = client.post(
         "/despesas/",
@@ -34,6 +64,7 @@ def test_read_despesa(client):
         "valor": 1,
         "data": "2022-08-02",
         "id": despesa_id,
+        "categoria": "Outras",
     }
 
 

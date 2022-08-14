@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from app.controller import receita
 from app.entity.schema import ReceitaPayloadSchema, ReceitaResponseSchema
 
@@ -21,9 +21,11 @@ async def create_receita(payload: ReceitaPayloadSchema) -> ReceitaResponseSchema
 
 
 @router.get("/", response_model=list[ReceitaResponseSchema], status_code=200)
-async def read_all_receitas() -> list[ReceitaResponseSchema]:
-    """Busca todas as receitas existentes no banco de dados."""
-    return await receita.get_all()
+async def read_all_receitas(
+    descricao: str | None = Query(default=None, max_length=255)
+) -> list[ReceitaResponseSchema]:
+    """Busca todas as receitas existentes no banco de dados. Aceita filtrar por descrição."""
+    return await receita.get_all(descricao)
 
 
 @router.get("/{id}", response_model=ReceitaResponseSchema, status_code=200)

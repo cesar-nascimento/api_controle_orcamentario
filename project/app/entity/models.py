@@ -29,7 +29,6 @@ class Receita(Model):
 
     def as_dict(self):
         return {
-            "id": self.id,
             "descricao": self.descricao,
             "valor": self.valor,
             "data": self.data,
@@ -45,7 +44,6 @@ class Despesa(Model):
 
     def as_dict(self):
         return {
-            "id": self.id,
             "descricao": self.descricao,
             "valor": self.valor,
             "data": self.data,

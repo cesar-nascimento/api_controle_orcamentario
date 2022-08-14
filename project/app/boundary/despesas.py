@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from app.controller import despesa
 from app.entity.schema import DespesaPayloadSchema, DespesaResponseSchema
 
@@ -21,9 +21,11 @@ async def create_despesa(payload: DespesaPayloadSchema) -> DespesaResponseSchema
 
 
 @router.get("/", response_model=list[DespesaResponseSchema], status_code=200)
-async def read_all_despesas() -> list[DespesaResponseSchema]:
+async def read_all_despesas(
+    descricao: str | None = Query(default=None, max_length=255)
+) -> list[DespesaResponseSchema]:
     """Busca todas as despesas existentes no banco de dados."""
-    return await despesa.get_all()
+    return await despesa.get_all(descricao)
 
 
 @router.get("/{id}", response_model=DespesaResponseSchema, status_code=200)

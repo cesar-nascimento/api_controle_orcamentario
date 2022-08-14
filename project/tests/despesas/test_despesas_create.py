@@ -15,7 +15,7 @@ def test_create_despesa_sem_categoria(client):
     )
 
     assert response.status_code == 201
-    assert response.json()["descricao"] == "test_create_despesa"
+    assert response.json()["descricao"] == "test_create_despesa_sem_categoria"
     assert response.json()["valor"] == 1
     assert response.json()["data"] == "2022-08-02"
     assert response.json()["categoria"] == "Outras"
@@ -35,7 +35,7 @@ def test_create_despesa_com_categoria(client):
     )
 
     assert response.status_code == 201
-    assert response.json()["descricao"] == "test_create_despesa"
+    assert response.json()["descricao"] == "test_create_despesa_com_categoria"
     assert response.json()["valor"] == 1
     assert response.json()["data"] == "2022-08-02"
     assert response.json()["categoria"] == "Alimentação"

@@ -18,6 +18,7 @@ def test_delete_despesa(client):
         "valor": 10,
         "data": "2022-08-02",
         "id": despesa_id,
+        "categoria": "Outras",
     }
     despesa_inexistente = client.get(f"/despesas/{despesa_id}")
     assert despesa_inexistente.status_code == 404

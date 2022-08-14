@@ -22,9 +22,12 @@ async def create(
 
 
 async def get_all(
-    item: Receita | Despesa,
+    descricao: str | None,
+    table: Receita | Despesa,
 ) -> list[ReceitaResponseSchema] | list[DespesaResponseSchema]:
-    return await item.all()
+    if descricao:
+        return await table.filter(descricao__icontains=descricao)
+    return await table.all()
 
 
 async def get(id: UUID, item: Receita | Despesa):
