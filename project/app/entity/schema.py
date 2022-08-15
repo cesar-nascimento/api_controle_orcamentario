@@ -1,8 +1,8 @@
 from datetime import date
 from uuid import UUID
+from decimal import Decimal
 
-from pydantic import BaseModel
-from pydantic import condecimal
+from pydantic import BaseModel, condecimal, create_model
 
 from app.entity.models import Categorias
 
@@ -34,3 +34,10 @@ class DespesaPayloadSchema(BasePayloadSchema):
 
 class DespesaResponseSchema(BaseResponseSchema):
     categoria: Categorias = Categorias.OUTRAS
+
+
+class ResumoSchema(BaseModel):
+    total_receitas: Decimal
+    total_despesas: Decimal
+    saldo_final_mes: Decimal
+    total_despesas_por_categoria: dict[Categorias, Decimal]

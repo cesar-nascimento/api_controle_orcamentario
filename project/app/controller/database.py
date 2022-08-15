@@ -1,7 +1,7 @@
 from uuid import UUID
 from datetime import date
 
-from app.entity.models import Receita, Despesa
+from app.entity.models import Receita, Despesa, Categorias
 from app.entity.schema import (
     ReceitaResponseSchema,
     DespesaResponseSchema,
@@ -72,3 +72,37 @@ async def delete(
 ) -> ReceitaResponseSchema | DespesaResponseSchema:
     receita = await item.filter(id=id).first().delete()
     return receita
+
+
+async def get_resumo_ano_mes(
+    ano: int,
+    mes: int,
+):
+    try:
+        data = date(ano, mes, 1)
+    except (ValueError, OverflowError):
+        return None
+    receitas = await Receita.filter(
+        data__year=data.year,
+        data__month=data.month,
+    )
+    despesas = await Despesa.filter(
+        data__year=data.year,
+        data__month=data.month,
+    )
+    total_receitas = sum([receita.valor for receita in receitas])
+    total_despesas = sum([despesa.valor for despesa in despesas])
+    saldo_final_mes = total_receitas - total_despesas
+    total_despesas_por_categoria = {
+        cat.value: sum(
+            [despesa.valor for despesa in despesas if despesa.categoria == cat.value]
+        )
+        for cat in Categorias
+    }
+    resumo = {
+        "total_receitas": total_receitas,
+        "total_despesas": total_despesas,
+        "saldo_final_mes": saldo_final_mes,
+        "total_despesas_por_categoria": total_despesas_por_categoria,
+    }
+    return resumo

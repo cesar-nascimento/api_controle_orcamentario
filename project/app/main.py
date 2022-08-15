@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 
 from app.db import init_db
-from app.boundary import healthcheck, receitas, despesas
+from app.boundary import healthcheck, receitas, despesas, resumo
 
 
 log = logging.getLogger("uvicorn")
@@ -24,6 +24,7 @@ Permite operações de CRUD para Receitas e Despesas.
     application.include_router(healthcheck.router)
     application.include_router(receitas.router, prefix="/receitas", tags=["receitas"])
     application.include_router(despesas.router, prefix="/despesas", tags=["despesas"])
+    application.include_router(resumo.router, prefix="/resumo", tags=["resumo"])
     return application
 
 
