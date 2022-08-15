@@ -40,7 +40,7 @@ async def read_despesa(id: UUID) -> DespesaResponseSchema:
 @router.get("/{ano}/{mes}", response_model=list[DespesaResponseSchema], status_code=200)
 async def read_all_despesas_ano_mes(ano: int, mes: int) -> list[DespesaResponseSchema]:
     """Busca todas as despesas existentes no mês e ano informados.
-    Retorna 422 em caso de data inválida"""
+    Retorna 422 em caso de data inválida."""
     items = await despesa.get_all_ano_mes(ano, mes)
     if items is None:
         raise HTTPException(status_code=422, detail="Data informada inválida.")
