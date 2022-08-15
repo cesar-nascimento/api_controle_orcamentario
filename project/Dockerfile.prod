@@ -26,4 +26,5 @@ USER app
 
 CMD aerich init -t app.db.TORTOISE_ORM \
 	&& aerich init-db \
+	&& aerich upgrade \
 	&& gunicorn --bind 0.0.0.0:$PORT app.main:app -k uvicorn.workers.UvicornWorker
