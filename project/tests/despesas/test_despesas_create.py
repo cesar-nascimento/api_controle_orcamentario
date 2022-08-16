@@ -121,7 +121,7 @@ def test_create_despesa_com_categoria(client):
                 "detail": [
                     {
                         "loc": ["body", "categoria"],
-                        "msg": "value is not a valid enumeration member; permitted: 'Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras'",
+                        "msg": "value is not a valid enumeration member; permitted: 'Alimentação', 'Saúde', 'Moradia', 'Transporte', 'Educação', 'Lazer', 'Imprevistos', 'Outras'",  # noqa: E501
                         "type": "type_error.enum",
                         "ctx": {
                             "enum_values": [

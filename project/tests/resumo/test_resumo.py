@@ -1,7 +1,4 @@
 import json
-import uuid
-
-import pytest
 
 
 def test_read_resumo(client):

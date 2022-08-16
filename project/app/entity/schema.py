@@ -2,7 +2,7 @@ from datetime import date
 from uuid import UUID
 from decimal import Decimal
 
-from pydantic import BaseModel, condecimal, create_model
+from pydantic import BaseModel, condecimal
 
 from app.entity.models import Categorias
 

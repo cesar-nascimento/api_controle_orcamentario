@@ -1,5 +1,6 @@
-.venv
 .dockerignore
+.vscode
+.git
 Dockerfile
 Dockerfile.prod
 Pipfile.lock

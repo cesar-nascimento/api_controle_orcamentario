@@ -24,7 +24,8 @@ async def create_receita(payload: ReceitaPayloadSchema) -> ReceitaResponseSchema
 async def read_receitas_totais(
     descricao: str | None = Query(default=None, max_length=255)
 ) -> list[ReceitaResponseSchema]:
-    """Busca todas as receitas existentes no banco de dados. Aceita filtrar por descrição."""
+    """Busca todas as receitas existentes no banco de dados.
+    Aceita filtrar por descrição."""
     return await receita.get_all(descricao)
 
 
