@@ -21,7 +21,7 @@ async def create_despesa(payload: DespesaPayloadSchema) -> DespesaResponseSchema
 
 
 @router.get("/", response_model=list[DespesaResponseSchema], status_code=200)
-async def read_all_despesas(
+async def read_despesas_totais(
     descricao: str | None = Query(default=None, max_length=255)
 ) -> list[DespesaResponseSchema]:
     """Busca todas as despesas existentes no banco de dados."""
@@ -38,7 +38,9 @@ async def read_despesa(id: UUID) -> DespesaResponseSchema:
 
 
 @router.get("/{ano}/{mes}", response_model=list[DespesaResponseSchema], status_code=200)
-async def read_all_despesas_ano_mes(ano: int, mes: int) -> list[DespesaResponseSchema]:
+async def read_resumo_despesas_mensais(
+    ano: int, mes: int
+) -> list[DespesaResponseSchema]:
     """Busca todas as despesas existentes no mês e ano informados.
     Retorna 422 em caso de data inválida."""
     items = await despesa.get_all_ano_mes(ano, mes)

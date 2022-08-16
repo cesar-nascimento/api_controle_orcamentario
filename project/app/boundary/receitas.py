@@ -21,7 +21,7 @@ async def create_receita(payload: ReceitaPayloadSchema) -> ReceitaResponseSchema
 
 
 @router.get("/", response_model=list[ReceitaResponseSchema], status_code=200)
-async def read_all_receitas(
+async def read_receitas_totais(
     descricao: str | None = Query(default=None, max_length=255)
 ) -> list[ReceitaResponseSchema]:
     """Busca todas as receitas existentes no banco de dados. Aceita filtrar por descrição."""
@@ -38,7 +38,9 @@ async def read_receita(id: UUID) -> ReceitaResponseSchema:
 
 
 @router.get("/{ano}/{mes}", response_model=list[ReceitaResponseSchema], status_code=200)
-async def read_all_receitas_ano_mes(ano: int, mes: int) -> list[ReceitaResponseSchema]:
+async def read_resumo_receitas_mensais(
+    ano: int, mes: int
+) -> list[ReceitaResponseSchema]:
     """Busca todas as receitas existentes no mês e ano informados.
     Retorna 422 em caso de data inválida."""
     items = await receita.get_all_ano_mes(ano, mes)
