@@ -21,8 +21,8 @@ RUN  PIPENV_VENV_IN_PROJECT=1 pipenv install --skip-lock --dev
 # lint usando flake8 e black.
 # Havendo erros, a build irá falhar para ser corrigida.
 COPY . /usr/src/app/
-RUN pipenv run flake8 .
-RUN pipenv run black --check .
+RUN pipenv run flake8 . \
+	&& pipenv run black --check .
 
 
 FROM base as runtime
