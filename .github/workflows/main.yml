@@ -79,6 +79,6 @@ jobs:
       - name: Check Running Containers
         run: docker ps -a
       - name: Check Running Containers
-        run: docker logs postgres --tail 10
+        run: docker logs postgres --tail all
       - name: Pytest
         run: docker exec api-controle-orcamentario python -m pytest .
