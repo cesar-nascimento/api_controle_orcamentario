@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     services:
-      postgres:
+      postgres1:
         image: postgres
         env:
           POSTGRES_USER: postgres
@@ -72,8 +72,8 @@ jobs:
             -d \
             --name api-controle-orcamentario \
             -e PORT=5003 \
-            -e DATABASE_URL=postgres://postgres:postgres@localhost:${{ env.POSTGRES_PORT }}/web_dev \
-            -e DATABASE_TEST_URL=postgres://postgres:postgres@localhost:${{ env.POSTGRES_PORT }}/web_test \
+            -e DATABASE_URL=postgres://postgres:postgres@postgres1:${{ env.POSTGRES_PORT }}/web_dev \
+            -e DATABASE_TEST_URL=postgres://postgres:postgres@postgres1:${{ env.POSTGRES_PORT }}/web_test \
             -p 5003:5003 \
             ${{ env.IMAGE }}:latest
         env:
@@ -81,6 +81,6 @@ jobs:
       - name: Check Running Containers
         run: docker ps -a
       - name: Check Running Containers
-        run: docker logs api-controle-orcamentario
+        run: docker logs api-controle-orcamentario --tail 10
       - name: Pytest
         run: docker exec api-controle-orcamentario python -m pytest .
