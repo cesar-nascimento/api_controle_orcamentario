@@ -81,6 +81,6 @@ jobs:
       - name: Check Running Containers
         run: docker ps -a
       - name: Check Running Containers
-        run: docker ps -a
+        run: docker logs api-controle-orcamentario
       - name: Pytest
         run: docker exec api-controle-orcamentario python -m pytest .
