@@ -38,13 +38,12 @@ jobs:
     needs: build
     services:
       postgres:
-        options: --name postgres1 --hostname postgres1
         image: postgres
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: web_dev
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name postgres1 --hostname postgres1
         # https://github.com/actions/example-services/blob/master/.github/workflows/postgres-service.yml#L71
         ports:
           - 5432/tcp
