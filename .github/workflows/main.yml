@@ -43,10 +43,10 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: web_dev
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name postgres1 --hostname postgres1
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name postgres --hostname postgres
         # https://github.com/actions/example-services/blob/master/.github/workflows/postgres-service.yml#L71
         ports:
-          - 5432/tcp
+          - 5432:5432
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -72,12 +72,10 @@ jobs:
             -d \
             --name api-controle-orcamentario \
             -e PORT=5003 \
-            -e DATABASE_URL=postgres://postgres:postgres@postgres1:${{ env.POSTGRES_PORT }}/web_dev \
-            -e DATABASE_TEST_URL=postgres://postgres:postgres@postgres1:${{ env.POSTGRES_PORT }}/web_test \
+            -e DATABASE_URL=postgres://postgres:postgres@postgres:5432/web_dev \
+            -e DATABASE_TEST_URL=postgres://postgres:postgres@postgres:5432/web_test \
             -p 5003:5003 \
             ${{ env.IMAGE }}:latest
-        env:
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
       - name: Check Running Containers
         run: docker ps -a
       - name: Check Running Containers
