@@ -8,7 +8,7 @@
 
 API REST para controle de orçamento. Projeto desenvolvido para o **Alura Challenge - Back-End 4ª edição**
 
-**Documentação:** <a href="https://api-controle-orcamentario.herokuapp.com/docs" target="_blank">https://api-controle-orcamentario.herokuapp.com/docs</a>
+**Documentação:** [https://api-controle-orcamentario.herokuapp.com/docs](https://api-controle-orcamentario.herokuapp.com/docs)
 
 API REST para cadastro de receitas e despesas e geração de relatórios mensais com total e saldo. A API também permite autenticação de usuários para controlar o acesso.
 
