@@ -36,6 +36,15 @@ jobs:
     name: Test Docker Image
     runs-on: ubuntu-latest
     needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Log in to GitHub Packages
+        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     services:
       postgres:
         image: postgres
@@ -47,16 +56,6 @@ jobs:
         # https://github.com/actions/example-services/blob/master/.github/workflows/postgres-service.yml#L71
         ports:
           - 5432:5432
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: main
-      - name: Log in to GitHub Packages
-        run: echo ${GITHUB_TOKEN} | docker login -u ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    services:
       api-controle-orcamentario:
         #./project/Dockerfile.prod
         image: ${{ env.IMAGE }}:latest || true
