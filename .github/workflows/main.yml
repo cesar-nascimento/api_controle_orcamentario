@@ -72,13 +72,13 @@ jobs:
             -d \
             --name api-controle-orcamentario \
             -e PORT=5003 \
-            -e DATABASE_URL=postgres://postgres:postgres@postgres:5432/web_dev \
-            -e DATABASE_TEST_URL=postgres://postgres:postgres@postgres:5432/web_test \
+            -e DATABASE_URL=postgres://postgres:postgres@localhost:5432/web_dev \
+            -e DATABASE_TEST_URL=postgres://postgres:postgres@localhost:5432/web_test \
             -p 5003:5003 \
             ${{ env.IMAGE }}:latest
       - name: Check Running Containers
         run: docker ps -a
       - name: Check Running Containers
-        run: docker logs api-controle-orcamentario --tail 10
+        run: docker logs postgres --tail 10
       - name: Pytest
         run: docker exec api-controle-orcamentario python -m pytest .
