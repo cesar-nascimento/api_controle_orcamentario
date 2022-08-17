@@ -1,45 +1,42 @@
-# api_controle_orcamentario
-Desenvolvimento de API para o desafio de back end da Alura.
+# API Controle Orçamentário
+![Build](https://github.com/cesar-nascimento/api_controle_orcamentario/actions/workflows/build.yml/badge.svg)
+![Tests](https://github.com/cesar-nascimento/api_controle_orcamentario/actions/workflows/tests.yml/badge.svg)
 
-Documentação: [https://api-controle-orcamentario.herokuapp.com/redoc](https://api-controle-orcamentario.herokuapp.com/redoc)
+---
 
-Atualmente estamos na [primeira semana](https://www.alura.com.br/challenges/back-end-4/semana-01-implementando-api-rest). Essa é a minha solução para o desafio com as [tecnologias](#tecnologias-utilizadas) que escolhi para criar a API.
+## 📖 Descrição do Projeto
 
-## Índice
-* [Sobre o desafio](#sobre-o-desafio)
-* [Tecnologias utilizadas](#tecnologias-utilizadas)
-* [Setup](#setup)
-* [Documentação](#documentação)
+API REST para controle de orçamento. Projeto desenvolvido para o **Alura Challenge - Back-End 4ª edição**
 
-## Sobre o desafio
-Após alguns testes com protótipos feitos pelo time de UX de uma empresa, foi requisitada a primeira versão de uma aplicação para controle de orçamento familiar. A aplicação deve permitir que uma pessoa cadastre suas receitas e despesas do mês, bem como gerar um relatório mensal.
-	
-## Tecnologias utilizadas
+**Documentação:** [https://api-controle-orcamentario.herokuapp.com/redoc](https://api-controle-orcamentario.herokuapp.com/redoc)
+
+API REST para cadastro de receitas e despesas e geração de relatórios mensais com total e saldo. A API também permite autenticação de usuários para controlar o acesso.
+
+## 🔨 Funcionalidades
+
+✔️ Adicionar, consultar, atualizar e deletar despesas.
+
+✔️ Adicionar, consultar, atualizar e deletar receitas.
+
+✔️ Resumo mensal com o total de despesas, receitas, saldo mensal e o total gasto por categoria.
+
+✔️ Testes automatizados de integração.
+
+❌ Autenticação de usuário com JWT.
+
+## 🧰 Tecnologias utilizadas
 * Python 3.10
 * Docker
 * FastAPI
 * PostgreSQL
 
-## Setup
+## ⚙️ Setup
 1. Para rodar a aplicação recomendo utilizar o Docker e instalar o Docker Composer. [Instalação do Docker.](https://docs.docker.com/get-docker/)
 
-2. Depois de instalado, siga um dos seguintes passos:
+2. Depois de instalado, suba a api utilizando o docker:
 
-	2.1. Rodando através da imagem disponível no Docker Hub:
+	2.1. `git clone https://github.com/cesar-nascimento/api_controle_orcamentario.git`
 
-		2.1.1. `docker pull cesar0nascimento/api-controle-orcamentario:latest`
-	
-		2.1.2. `docker run --name api_controle_orcamentario -e PORT=8000 -e DATABASE_URL=sqlite://sqlite.db -p 8000:8000 cesar0nascimento/api-controle-orcamentario:latest`
+	2.2. `docker-compose up --build`
 
-	2.2. Rodando a aplicação através de imagem local:
-		
-		2.2.1. `git clone https://github.com/cesar-nascimento/api_controle_orcamentario.git`
-		
-		2.2.2. `docker-compose up --build`
-
-3. Navegue até a url `http://localhost:8000/healthcheck` ou `http://localhost:8000/docs` para verificar a aplicação funcionando e testar requisições.
-
-4. Informações sobre as rotas disponíveis e o formato das requisições podem ser verificados na [Documentação](#documentação)
-
-## Documentação
-A documentação pode ser encontrada em [https://api-controle-orcamentario.herokuapp.com/redoc](https://api-controle-orcamentario.herokuapp.com/redoc)
+3. Acesse `http://localhost:5003/docs` para verificar a documentação e testar a aplicação.
