@@ -72,8 +72,8 @@ jobs:
             -d \
             --name api-controle-orcamentario \
             -e PORT=5003 \
-            -e DATABASE_URL=postgres://postgres:postgres@localhost:5432/web_dev \
-            -e DATABASE_TEST_URL=postgres://postgres:postgres@localhost:5432/web_test \
+            -e DATABASE_URL=postgres://postgres:postgres@0.0.0.0:5432/web_dev \
+            -e DATABASE_TEST_URL=postgres://postgres:postgres@0.0.0.0:5432/web_test \
             -p 5003:5003 \
             ${{ env.IMAGE }}:latest
       - name: Check Running Containers
