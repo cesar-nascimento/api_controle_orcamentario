@@ -1,44 +1,45 @@
 # pull official base image
 FROM python:3.10-alpine3.16 as base
 
-ENV PYTHONFAULTHANDLER 1
 # Evitar .pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
 # Envia stdout e stderr para o terminal
 ENV PYTHONBUFFERED 1
 
-FROM base as python-deps
 
-# set work directory
+FROM base as python-deps
+# Build utilizada pra baixar as dependencias
+# local de instalação do venv
 WORKDIR /usr/src/app
 
-# install dependencies
+# instala dependencias
 RUN pip install --upgrade pip \
 	&& pip install pipenv
 COPY ./Pipfile ./
-RUN  PIPENV_VENV_IN_PROJECT=1 pipenv install --skip-lock --deploy
+RUN  PIPENV_VENV_IN_PROJECT=1 pipenv install --skip-lock --dev
 
-# lint
+# lint usando flake8 e black.
+# Havendo erros, a build irá falhar para ser corrigida.
 COPY . /usr/src/app/
-RUN pip install black flake8
-RUN flake8 .
-RUN black --check --extend-exclude=migrations .
+RUN pipenv run flake8 .
+RUN pipenv run black --check .
 
 
 FROM base as runtime
+# Build utilizada para o runtime
+WORKDIR /home/app/web
 
-RUN addgroup -S app && adduser -S app -G app
-
-ENV APP_HOME=/home/app/web
-WORKDIR $APP_HOME
-
-# Copy virtual env from python-deps stage
+# Copia virtual env do estágio python-deps
 COPY --from=python-deps /usr/src/app/.venv /opt/venv
+# Python utiliza a variável PATH para rodar dentro do venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY . .
 
-RUN chown -R app:app $APP_HOME
+RUN addgroup -S app \
+	&& adduser -S app -G app \
+	&& chown -R app:app /home/app/web
+
 USER app
 
 CMD python -m gunicorn --bind 0.0.0.0:$PORT app.main:app -k uvicorn.workers.UvicornWorker

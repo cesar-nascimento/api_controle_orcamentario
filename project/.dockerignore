@@ -1,6 +1,9 @@
-.dockerignore
-.vscode
-.git
-Dockerfile
-Dockerfile.prod
-Pipfile.lock
+# Ignora tudo
+*
+
+# Exceto arquivos e diretórios
+!/Pipfile
+!/app
+!/tests
+!/.flake8
+!/entrypoint.sh

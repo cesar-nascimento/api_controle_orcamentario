@@ -3,14 +3,12 @@ version: "3.9"
 services:
   web:
     build: ./project
-    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    command: python -m uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 5003
     volumes:
       - app-volume:/usr/src/app
     ports:
-      - 8000:8000
+      - 5003:5003
     environment:
-     - ENVIRONMENT=dev
-     - TESTING=0
      - DATABASE_URL=postgres://postgres:postgres@web-db:5432/web_dev
      - DATABASE_TEST_URL=postgres://postgres:postgres@web-db:5432/web_test
 

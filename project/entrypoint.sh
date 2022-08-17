@@ -8,7 +8,4 @@ done
 
 echo "PostgreSQL Iniciado"
 
-aerich init -t app.db.TORTOISE_ORM
-aerich init-db
-
 exec "$@"
