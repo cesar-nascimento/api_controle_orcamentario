@@ -13,6 +13,9 @@ pytest = "*"
 requests = "*"
 pytest-cov = "*"
 tortoise-orm = "*"
+pyjwt = {extras = ["crypto"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
+python-multipart = "*"
 
 [dev-packages]
 flake8 = "*"

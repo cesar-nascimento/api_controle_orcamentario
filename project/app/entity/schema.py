@@ -2,7 +2,7 @@ from datetime import date
 from uuid import UUID
 from decimal import Decimal
 
-from pydantic import BaseModel, condecimal
+from pydantic import BaseModel, condecimal, SecretStr, Field
 
 from app.entity.models import Categorias
 
@@ -41,3 +41,16 @@ class ResumoSchema(BaseModel):
     total_despesas: Decimal
     saldo_final_mes: Decimal
     total_despesas_por_categoria: dict[Categorias, Decimal]
+
+
+class Usuario(BaseModel):
+    username: str
+    disabled: bool
+    password: SecretStr = Field(..., exclude=True)
+
+
+class UsuarioInDB(Usuario):
+    id: UUID
+
+    class Config:
+        orm_mode = True

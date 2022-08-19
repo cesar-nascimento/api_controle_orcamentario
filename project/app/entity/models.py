@@ -26,12 +26,14 @@ class Receita(Model):
     descricao = fields.TextField(max_length=255)
     valor = fields.DecimalField(max_digits=9, decimal_places=2)
     data = CustomDateField()
+    usuario = fields.ForeignKeyField("models.Usuario", on_delete="CASCADE")
 
     def as_dict(self):
         return {
             "descricao": self.descricao,
             "valor": self.valor,
             "data": self.data,
+            "usuario": self.usuario,
         }
 
 
@@ -41,6 +43,7 @@ class Despesa(Model):
     valor = fields.DecimalField(max_digits=9, decimal_places=2)
     data = CustomDateField()
     categoria = fields.CharEnumField(Categorias, default=Categorias.OUTRAS)
+    usuario = fields.ForeignKeyField("models.Usuario", on_delete="CASCADE")
 
     def as_dict(self):
         return {
@@ -48,4 +51,12 @@ class Despesa(Model):
             "valor": self.valor,
             "data": self.data,
             "categoria": self.categoria,
+            "usuario": self.usuario,
         }
+
+
+class Usuario(Model):
+    id = fields.UUIDField(pk=True)
+    username = fields.CharField(max_length=255, required=True, unique=True, null=False)
+    disabled = fields.BooleanField(default=False)
+    password = fields.CharField(max_length=255)

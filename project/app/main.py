@@ -1,9 +1,9 @@
 import logging
-
+import time
 from fastapi import FastAPI
 
-from app.db import init_db
-from app.boundary import healthcheck, receitas, despesas, resumo
+from app.db import init_db, criar_usuarios_fake
+from app.boundary import healthcheck, receitas, despesas, resumo, usuarios
 
 
 log = logging.getLogger("uvicorn")
@@ -25,6 +25,7 @@ Permite operações de CRUD para Receitas e Despesas.
     application.include_router(receitas.router, prefix="/receitas", tags=["receitas"])
     application.include_router(despesas.router, prefix="/despesas", tags=["despesas"])
     application.include_router(resumo.router, prefix="/resumo", tags=["resumo"])
+    application.include_router(usuarios.router)
     return application
 
 
@@ -35,6 +36,7 @@ app = create_application()
 async def startup_event():
     log.info("Starting up...")
     init_db(app)
+    await criar_usuarios_fake()
 
 
 @app.on_event("shutdown")
