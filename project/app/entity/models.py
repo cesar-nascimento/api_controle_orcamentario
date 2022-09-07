@@ -33,17 +33,16 @@ class Receita(Model):
             "descricao": self.descricao,
             "valor": self.valor,
             "data": self.data,
-            "usuario": self.usuario,
         }
 
 
-class Despesa(Model):
-    id = fields.UUIDField(pk=True)
-    descricao = fields.TextField(max_length=255)
-    valor = fields.DecimalField(max_digits=9, decimal_places=2)
-    data = CustomDateField()
+class Despesa(Receita):
+    # id = fields.UUIDField(pk=True)
+    # descricao = fields.TextField(max_length=255)
+    # valor = fields.DecimalField(max_digits=9, decimal_places=2)
+    # data = CustomDateField()
+    # usuario = fields.ForeignKeyField("models.Usuario", on_delete="CASCADE")
     categoria = fields.CharEnumField(Categorias, default=Categorias.OUTRAS)
-    usuario = fields.ForeignKeyField("models.Usuario", on_delete="CASCADE")
 
     def as_dict(self):
         return {
@@ -51,7 +50,6 @@ class Despesa(Model):
             "valor": self.valor,
             "data": self.data,
             "categoria": self.categoria,
-            "usuario": self.usuario,
         }
 
 

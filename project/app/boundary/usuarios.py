@@ -9,7 +9,7 @@ from app.controller import usuario
 router = APIRouter()
 
 
-@router.post("/token")
+@router.post("/")
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await usuario.authenticate_user(form_data.username, form_data.password)
     if not user:

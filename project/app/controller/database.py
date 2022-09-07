@@ -15,7 +15,7 @@ async def create(
         descricao__iexact=item.descricao,
         data__year=item.data.year,
         data__month=item.data.month,
-        usuario=user.id,
+        usuario_id=user.id,
     ).first()
     if item_ja_existe:
         return None
@@ -27,7 +27,7 @@ async def get_all(
     descricao: str | None, table: Receita | Despesa, user: Usuario
 ) -> list[ReceitaResponseSchema] | list[DespesaResponseSchema]:
     if descricao:
-        return await table.filter(descricao__icontains=descricao, usuario=user.id)
+        return await table.filter(descricao__icontains=descricao, usuario_id=user.id)
     return await table.all()
 
 
@@ -39,12 +39,12 @@ async def get_all_ano_mes(
     except (ValueError, OverflowError):
         return None
     return await table.filter(
-        data__year=data.year, data__month=data.month, usuario=user.id
+        data__year=data.year, data__month=data.month, usuario_id=user.id
     )
 
 
 async def get(id: UUID, item: Receita | Despesa, user: Usuario):
-    return await item.filter(id=id, usuario=user.id).first()
+    return await item.filter(id=id, usuario_id=user.id).first()
 
 
 async def put(
@@ -58,7 +58,7 @@ async def put(
         descricao__iexact=item_novo.descricao,
         data__year=item_novo.data.year,
         data__month=item_novo.data.month,
-        usuario=user.id,
+        usuario_id=user.id,
     ).first()
     if item_novo_ja_existe and item_novo_ja_existe.id != id:
         return None
@@ -69,7 +69,7 @@ async def put(
 async def delete(
     id: UUID, item: Receita | Despesa, user: Usuario
 ) -> ReceitaResponseSchema | DespesaResponseSchema:
-    receita = await item.filter(id=id, usuario=user.id).first().delete()
+    receita = await item.filter(id=id, usuario_id=user.id).first().delete()
     return receita
 
 
@@ -79,10 +79,10 @@ async def get_resumo_ano_mes(ano: int, mes: int, user: Usuario):
     except (ValueError, OverflowError):
         return None
     receitas = await Receita.filter(
-        data__year=data.year, data__month=data.month, usuario=user.id
+        data__year=data.year, data__month=data.month, usuario_id=user.id
     )
     despesas = await Despesa.filter(
-        data__year=data.year, data__month=data.month, usuario=user.id
+        data__year=data.year, data__month=data.month, usuario_id=user.id
     )
     total_receitas = sum([receita.valor for receita in receitas])
     total_despesas = sum([despesa.valor for despesa in despesas])

@@ -2,10 +2,9 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Query, Depends
 
-
 from app.controller import receita
 from app.controller.usuario import get_current_active_user
-from app.entity.schema import ReceitaPayloadSchema, ReceitaResponseSchema, Usuario
+from app.entity.schema import ReceitaPayloadSchema, ReceitaResponseSchema, UsuarioInDB
 
 
 router = APIRouter()
@@ -14,7 +13,7 @@ router = APIRouter()
 @router.post("/", response_model=ReceitaResponseSchema, status_code=201)
 async def create_receita(
     payload: ReceitaPayloadSchema,
-    usuario: Usuario = Depends(get_current_active_user),
+    usuario: UsuarioInDB = Depends(get_current_active_user),
 ) -> ReceitaResponseSchema:
     """Cria uma nova receita no banco de dados ou retorna 409 em caso de duplicidade.
     Não podem existir duas receitas no mesmo mês com a mesma descrição."""
@@ -29,7 +28,7 @@ async def create_receita(
 @router.get("/", response_model=list[ReceitaResponseSchema], status_code=200)
 async def read_receitas_totais(
     descricao: str | None = Query(default=None, max_length=255),
-    usuario: Usuario = Depends(get_current_active_user),
+    usuario: UsuarioInDB = Depends(get_current_active_user),
 ) -> list[ReceitaResponseSchema]:
     """Busca todas as receitas existentes no banco de dados.
     Aceita filtrar por descrição."""
@@ -38,7 +37,7 @@ async def read_receitas_totais(
 
 @router.get("/{id}", response_model=ReceitaResponseSchema, status_code=200)
 async def read_receita(
-    id: UUID, usuario: Usuario = Depends(get_current_active_user)
+    id: UUID, usuario: UsuarioInDB = Depends(get_current_active_user)
 ) -> ReceitaResponseSchema:
     """Retorna uma única receita ou 404 caso não exista receita com o id informado."""
     item = await receita.get(id, usuario)
@@ -49,7 +48,7 @@ async def read_receita(
 
 @router.get("/{ano}/{mes}", response_model=list[ReceitaResponseSchema], status_code=200)
 async def read_resumo_receitas_mensais(
-    ano: int, mes: int, usuario: Usuario = Depends(get_current_active_user)
+    ano: int, mes: int, usuario: UsuarioInDB = Depends(get_current_active_user)
 ) -> list[ReceitaResponseSchema]:
     """Busca todas as receitas existentes no mês e ano informados.
     Retorna 422 em caso de data inválida."""
@@ -63,7 +62,7 @@ async def read_resumo_receitas_mensais(
 async def update_receita(
     id: UUID,
     payload: ReceitaPayloadSchema,
-    usuario: Usuario = Depends(get_current_active_user),
+    usuario: UsuarioInDB = Depends(get_current_active_user),
 ) -> ReceitaResponseSchema:
     """Update de receita por id informado. Retorna 404 caso não encontrada.
     Retorna 409 caso update venha a gerar receita duplicada."""
@@ -83,7 +82,7 @@ async def update_receita(
 
 @router.delete("/{id}", response_model=ReceitaResponseSchema)
 async def delete_receita(
-    id: UUID, usuario: Usuario = Depends(get_current_active_user)
+    id: UUID, usuario: UsuarioInDB = Depends(get_current_active_user)
 ) -> ReceitaResponseSchema:
     item = await receita.get(id, usuario)
     if not item:

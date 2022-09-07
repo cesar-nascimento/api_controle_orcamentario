@@ -9,7 +9,6 @@ def test_create_receita(client):
             {"descricao": "test_create_receita", "valor": 1, "data": "2022-08-02"}
         ),
     )
-
     assert response.status_code == 201
     assert response.json()["descricao"] == "test_create_receita"
     assert response.json()["valor"] == 1

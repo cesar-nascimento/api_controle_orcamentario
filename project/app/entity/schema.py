@@ -14,6 +14,7 @@ class BasePayloadSchema(BaseModel):
 
 
 class BaseResponseSchema(BasePayloadSchema):
+    usuario = UUID
     id: UUID
 
     class Config:

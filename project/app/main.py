@@ -1,5 +1,4 @@
 import logging
-import time
 from fastapi import FastAPI
 
 from app.db import init_db, criar_usuarios_fake
@@ -25,7 +24,7 @@ Permite operações de CRUD para Receitas e Despesas.
     application.include_router(receitas.router, prefix="/receitas", tags=["receitas"])
     application.include_router(despesas.router, prefix="/despesas", tags=["despesas"])
     application.include_router(resumo.router, prefix="/resumo", tags=["resumo"])
-    application.include_router(usuarios.router)
+    application.include_router(usuarios.router, prefix="/token", tags=["token"])
     return application
 
 

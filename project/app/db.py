@@ -30,7 +30,7 @@ def init_db(app: FastAPI) -> None:
     )
 
 
-async def criar_usuarios_fake():
+async def criar_usuarios_fake(db_url=None):
     # Atenção.
     # Usuarios criados apenas para exemplo e demonstração da API.
     # Não criar dessa forma se estiver clonando o projeto do Github.
@@ -46,9 +46,9 @@ async def criar_usuarios_fake():
             "disabled": True,
         },
     ]
-    await Tortoise.init(
-        db_url=os.getenv("DATABASE_URL"), modules={"models": ["app.entity.models"]}
-    )
+    if not db_url:
+        db_url = os.getenv("DATABASE_URL")
+    await Tortoise.init(db_url=db_url, modules={"models": ["app.entity.models"]})
     await Tortoise.generate_schemas()
     for user in fake_users_db:
         item = Usuario(

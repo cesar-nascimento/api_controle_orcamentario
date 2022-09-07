@@ -1,4 +1,3 @@
-from secrets import token_hex
 from datetime import timedelta, datetime
 
 from fastapi import Depends, HTTPException
@@ -11,7 +10,7 @@ from app.entity.schema import UsuarioInDB
 from app.controller import database
 
 
-SECRET_KEY = token_hex(32)
+SECRET_KEY = "99549bdea40fcfb8918ff38673528638f68c039befabe3338012e3c2467913c9"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
